@@ -5,23 +5,81 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
 import com.limoncitoscompany.springboot.model.Product;
-
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+
 
 @Controller
 public class ProductWebController {
+   @Autowired
+   ProductController productController;
 
-	@Autowired
-	ProductController productController;
+   @GetMapping("/")
+   public String getAllProducts(Model model) {
+       
+       List<Product> productsList = productController.getAllProducts();
 
-	@GetMapping("/")
-	public String getAllProducts(Model model) {
+       model.addAttribute("products", productsList);
+
+       return "list_products";
+   }
+
+   @GetMapping("/new_product")
+   public String addProduct(Model model) {
+
+       Product product = new Product();
+
+       model.addAttribute("product", product);
+
+       return "new_product";
+   }
+
+	@PostMapping(value = "/save_new")
+	public String saveNewProduct(@ModelAttribute("product") Product product) {
+
+		productController.addProduct(product);
+
+		return "redirect:/";
+	}
+
+
+    @GetMapping("/update_product/{pId}")
+	public String editProduct(@PathVariable(name = "pId") Long id, Model model) {
+
+		model.addAttribute("product", productController.getProduct(id));
 		
-		List<Product> productsList = productController.getAllProducts();
+		return "update_product";
+	}
 
-		model.addAttribute("products", productsList);
+	@PostMapping(value = "/save_update")
+	public String saveUpdateProduct(@ModelAttribute("product") Product product) {
+		
+		productController.updateProduct(product, product.getId());
 
-		return "list_products";
+		return "redirect:/";
+	}
+
+    
+	@GetMapping("/delete_product/{pId}")
+	public String deleteProduct(@PathVariable("pId") Long id, Model model)  {
+
+		model.addAttribute("product", productController.getProduct(id));
+
+		return "delete_product";
+	}
+	
+	
+	@PostMapping("/save_delete")
+	public String saveDeleteProduct(@ModelAttribute("product") Product product)  {
+
+		productController.deleteProduct(product.getId());
+
+		return "redirect:/";
 	}
 }
+
