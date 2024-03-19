@@ -4,25 +4,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import java.util.Date;
 
-import com.limoncitoscompany.springboot.model.Product;
-import com.limoncitoscompany.springboot.repository.ProductRepository;
+import com.limoncitoscompany.springboot.model.Client;
+import com.limoncitoscompany.springboot.repository.ClientRepository;
 
 @SpringBootApplication
 public class SpringbootApplication  implements CommandLineRunner {
 	@Autowired
-	private ProductRepository productRepository;
-
+	private ClientRepository clientRepository;
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootApplication.class, args);
 	}
 
 	public void run(String... args) throws Exception{
-		productRepository.save(new Product("Television", "Electrinics"));
-		productRepository.save(new Product("Television", "Electrinics"));
-		productRepository.save(new Product("Television", "Electrinics"));
-		productRepository.save(new Product("Television", "Electrinics"));
-		productRepository.save(new Product("Television", "Electrinics"));
+		Date date = new Date();
+
+		clientRepository.save(new Client("Television", "Electrinics","w" ,1 ,1,date));
+		clientRepository.save(new Client("Television", "Electrinics","w" ,1 ,1,date));
+		clientRepository.save(new Client("Television", "Electrinics","w" ,1 ,1,date));
+		clientRepository.save(new Client("Television", "Electrinics","w" ,1 ,1,date));
+		clientRepository.save(new Client("Television", "Electrinics","w" ,1 ,1,date));
+
+
+	
 	}
 }
 
